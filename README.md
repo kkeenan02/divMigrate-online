@@ -21,3 +21,5 @@ Currently the application is only available to run locally. This can be done by 
 library(shiny)
 runGitHub("divMigrate-online", "kkeenan02")
 ```
+
+The input file should be in the genepop file format.
