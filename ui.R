@@ -1,30 +1,42 @@
-
-# This is the user-interface definition of a Shiny web application.
-# You can find out more about building applications with Shiny here:
-#
-# http://shiny.rstudio.com
-#
-
 library(shiny)
+library(diveRsity)
 
-shinyUI(fluidPage(
 
-  # Application title
-  titlePanel("Old Faithful Geyser Data"),
 
-  # Sidebar with a slider input for number of bins
-  sidebarLayout(
-    sidebarPanel(
-      sliderInput("bins",
-                  "Number of bins:",
-                  min = 1,
-                  max = 50,
-                  value = 30)
-    ),
-
-    # Show a plot of the generated distribution
-    mainPanel(
-      plotOutput("distPlot")
-    )
-  )
+# Define UI
+shinyUI(pageWithSidebar(
+  
+  #app title
+  headerPanel("divMigrate Online"),
+  
+  #input
+  sidebarPanel(
+    
+    fileInput("file", "Input file", multiple = FALSE, accept = NULL),
+            
+    numericInput("nbs", "Number of bootstraps", value = 0, min = 0, 
+                 max = 1000, step = 100),
+    
+    checkboxGroupInput("stat", "Migration Statistic", 
+                       c("D", "Gst", "Nm", "All"), selected = "D"),
+    
+    sliderInput("filter_threshold", "Filter Threshold", min = 0, max = 1, 
+                value = 0, step = 0.05),
+    
+    checkboxInput("plt", "Plot Network?", FALSE),
+    
+    
+    actionButton("goButton", "Calculate"),
+    
+    helpText(""),
+    
+    helpText("Written and designed by Kevin Keenan using shiny",
+             "from RStudio and Inc. (2012)."),
+    helpText("Any suggestion or questions should be directed to,"),
+    helpText("<kkeenan02 AT qub.ac.uk>")
+  )  
+    
+    ,
+  
+  mainPanel(plotOutput("plt"))
 ))
