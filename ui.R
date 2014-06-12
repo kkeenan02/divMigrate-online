@@ -4,39 +4,36 @@ library(diveRsity)
 
 
 # Define UI
-shinyUI(pageWithSidebar(
+shinyUI(
   
-  #app title
-  headerPanel("divMigrate Online"),
-  
-  #input
-  sidebarPanel(
+  pageWithSidebar(
     
-    fileInput("file", "Input file", multiple = FALSE, accept = NULL),
-            
-    numericInput("nbs", "Number of bootstraps", value = 0, min = 0, 
-                 max = 1000, step = 100),
+    headerPanel("divMigrate Online"),
     
-    checkboxGroupInput("stat", "Migration Statistic", 
-                       c("D", "Gst", "Nm", "All"), selected = "D"),
+    sidebarPanel(
+      
+      fileInput("file", "Input file", multiple = FALSE, accept = NULL),
+      
+      numericInput("nbs", "Number of bootstraps", value = 0, min = 0, 
+                   max = 1000, step = 100),
+      
+      checkboxGroupInput("stat", "Migration Statistic", 
+                         c("D", "Gst", "Nm"), selected = "D"),
+      
+      sliderInput("filter_threshold", "Filter Threshold", min = 0, max = 1, 
+                  value = 0, step = 0.05),
+      
+      
+      actionButton("goButton", "Calculate"),
+      
+      helpText(""),
+      
+      helpText("Written and designed by Kevin Keenan using shiny",
+               "from RStudio and Inc. (2012).")
+    ),
     
-    sliderInput("filter_threshold", "Filter Threshold", min = 0, max = 1, 
-                value = 0, step = 0.05),
-    
-    checkboxInput("plt", "Plot Network?", FALSE),
-    
-    
-    actionButton("goButton", "Calculate"),
-    
-    helpText(""),
-    
-    helpText("Written and designed by Kevin Keenan using shiny",
-             "from RStudio and Inc. (2012)."),
-    helpText("Any suggestion or questions should be directed to,"),
-    helpText("<kkeenan02 AT qub.ac.uk>")
-  )  
-    
-    ,
-  
-  mainPanel(plotOutput("plt"))
-))
+    mainPanel(
+      plotOutput("plt") 
+    )
+ )
+)
