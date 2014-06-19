@@ -1,6 +1,6 @@
 # Load packages
 library("shiny")
-library("diveRsity")#, lib.loc = "/home/kkeenan/depends/")
+library("divMig")#, lib.loc = "/home/kkeenan/depends/")
 #library("shinyIncubator")
 
 shinyServer(function(input, output, session){
