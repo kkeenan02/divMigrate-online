@@ -1,6 +1,5 @@
 # Load packages
 library("shiny")
-devtools::install_github("kkeenan02/diveRsity")
 library("diveRsity")#, lib.loc = "/home/kkeenan/depends/")
 #library("shinyIncubator")
 
