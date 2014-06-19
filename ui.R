@@ -1,8 +1,5 @@
-library(shiny)
-library(diveRsity)
-
-
-
+#library(shiny)
+#library(diveRsity)
 # Define UI
 shinyUI(
   
