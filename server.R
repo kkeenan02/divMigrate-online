@@ -1,7 +1,9 @@
 # Load packages
 library("shiny")
-library("diveRsity")#, lib.loc = "/home/kkeenan/depends/")
-#library("shinyIncubator")
+library("diveRsity")
+
+# Increase file upload limit
+options(shiny.maxRequestSize = 30*(1024^2))
 
 shinyServer(function(input, output, session){
   
