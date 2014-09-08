@@ -3,7 +3,7 @@ library("shiny")
 library("diveRsity")
 
 # Increase file upload limit
-options(shiny.maxRequestSize = 30*(1024^2))
+options(shiny.maxRequestSize = 50*(1024^2))
 
 shinyServer(function(input, output, session){
   
