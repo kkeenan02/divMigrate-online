@@ -12,7 +12,7 @@ shinyUI(
       fileInput("file", "Input file", multiple = FALSE, accept = NULL),
       
       numericInput("nbs", "Number of bootstraps", value = 0, min = 0, 
-                   max = 1000, step = 100),
+                   max = 5000, step = 1),
       
       checkboxGroupInput("stat", "Migration Statistic", 
                          c("D", "Gst", "Nm"), selected = "D"),
@@ -30,7 +30,23 @@ shinyUI(
     ),
     
     mainPanel(
-      plotOutput("plt") 
+        tabsetPanel(
+          tabPanel(
+            h5("Usage Instructions"),
+            "Welcome to the divMigrate-Online webb app!"
+          ),
+          tabPanel(
+            h5("Network Plots"),
+            downloadButton("dlPlt", "Download Network .eps"),
+            plotOutput("plt")           
+          ),
+          tabPanel(
+            h5("Results Matrix"),
+            h6("To download a file containing your results as a tab",
+               "delimited file, please click the button below:"),
+            downloadButton("mat", "Download your file!")
+          )
+        )   
     )
- )
+  )
 )
