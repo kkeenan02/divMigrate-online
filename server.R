@@ -116,62 +116,63 @@ shinyServer(function(input, output, session){
   )
   
   # Downloadable plots
-  output$dlPlt <- downloadHandler(
-    filename = function() {
-      if(input$stat == "D"){
-        paste("divMigrate_", gsub(" ", "_", date()), "-[D-Network].eps", 
-              sep = "") 
-      } else if(input$stat == "Gst"){
-        paste("divMigrate_", gsub(" ", "_", date()), "-[Gst-Network].eps",
-              sep = "")
-      } else if(input$stat == "Nm"){
-        paste("divMigrate_", gsub(" ", "_", date()), "-[Nm-Network].eps",
-              sep = "")
-      }
-    },
-    content = function(file) {
-      temp <- tempfile()
-      on.exit(unlink(temp))
-      op <- out()
-      if(input$stat == "D" & input$nbs == 0L){
-        postscript(file = temp)
-        replayPlot(op$Dplt)
-        dev.off()
-        bytes <- readBin(temp, "raw", file.info(temp)$size)
-        writeBin(bytes, file)
-      } else if(input$stat == "D" & input$nbs != 0L){
-        postscript(file = temp, horizontal = FALSE)
-        replayPlot(op$Dplt_bs)
-        dev.off()
-        bytes <- readBin(temp, "raw", file.info(temp)$size)
-        writeBin(bytes, file)
-      } else if(input$stat == "Gst" & input$nbs == 0L){
-        postscript(file = temp, horizontal = FALSE)
-        replayPlot(op$Gplt)
-        dev.off()
-        bytes <- readBin(temp, "raw", file.info(temp)$size)
-        writeBin(bytes, file)
-      } else if(input$stat == "Gst" & input$nbs != 0L){
-        postscript(file = temp, horizontal = FALSE)
-        replayPlot(op$Gplt_bs)
-        dev.off()
-        bytes <- readBin(temp, "raw", file.info(temp)$size)
-        writeBin(bytes, file)
-      } else if(input$stat == "Nm" & input$nbs == 0L){
-        postscript(file = temp, horizontal = FALSE)
-        replayPlot(op$Nmplt)
-        dev.off()
-        bytes <- readBin(temp, "raw", file.info(temp)$size)
-        writeBin(bytes, file)
-      } else if(input$stat == "Nm" & input$nbs != 0L){
-        postscript(file = temp, horizontal = FALSE)
-        replayPlot(op$Nmplt_bs)
-        dev.off()
-        bytes <- readBin(temp, "raw", file.info(temp)$size)
-        writeBin(bytes, file)
-      }
-    }
-  )
+#   output$dlPlt <- downloadHandler(
+#     filename = function() {
+#       if(input$stat == "D"){
+#         paste("divMigrate_", gsub(" ", "_", date()), "-[D-Network].eps", 
+#               sep = "") 
+#       } else if(input$stat == "Gst"){
+#         paste("divMigrate_", gsub(" ", "_", date()), "-[Gst-Network].eps",
+#               sep = "")
+#       } else if(input$stat == "Nm"){
+#         paste("divMigrate_", gsub(" ", "_", date()), "-[Nm-Network].eps",
+#               sep = "")
+#       }
+#     },
+#     content = function(file) {
+#       op <- out()
+#       if(input$stat == "D" & input$nbs == 0L){
+#         #tmp <- tempfile()
+#         #on.exit(unlink(tmp))
+#         png(file = file)
+#         replayPlot(op$Dplt)
+#         dev.off()
+#         #bytes <- readBin(tmp, "raw", file.info(tmp)$size)
+#         #writeBin(bytes, file)
+#         contentType = "image/png"
+#       } else if(input$stat == "D" & input$nbs != 0L){
+#         postscript(file = file, horizontal = FALSE)
+#         replayPlot(op$Dplt_bs)
+#         dev.off()
+#         bytes <- readBin(file, "raw", file.info(file)$size)
+#         writeBin(bytes, file)
+#       } else if(input$stat == "Gst" & input$nbs == 0L){
+#         postscript(file = file, horizontal = FALSE)
+#         replayPlot(op$Gplt)
+#         dev.off()
+#         bytes <- readBin(file, "raw", file.info(file)$size)
+#         writeBin(bytes, file)
+#       } else if(input$stat == "Gst" & input$nbs != 0L){
+#         postscript(file = file, horizontal = FALSE)
+#         replayPlot(op$Gplt_bs)
+#         dev.off()
+#         bytes <- readBin(file, "raw", file.info(file)$size)
+#         writeBin(bytes, file)
+#       } else if(input$stat == "Nm" & input$nbs == 0L){
+#         postscript(file = file, horizontal = FALSE)
+#         replayPlot(op$Nmplt)
+#         dev.off()
+#         bytes <- readBin(file, "raw", file.info(file)$size)
+#         writeBin(bytes, file)
+#       } else if(input$stat == "Nm" & input$nbs != 0L){
+#         postscript(file = file, horizontal = FALSE)
+#         replayPlot(op$Nmplt_bs)
+#         dev.off()
+#         bytes <- readBin(file, "raw", file.info(file)$size)
+#         writeBin(bytes, file)
+#       }
+#     }
+#   )
   
   
 })

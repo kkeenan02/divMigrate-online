@@ -5,7 +5,7 @@ shinyUI(
   
   pageWithSidebar(
     
-    headerPanel(HTML("<font color = #484587>divMigrate Online</font>")),
+    headerPanel("divMigrate-online"),
     
     sidebarPanel(
       
@@ -14,8 +14,8 @@ shinyUI(
       numericInput("nbs", "Number of bootstraps", value = 0, min = 0, 
                    max = 5000, step = 1),
       
-      checkboxGroupInput("stat", "Migration Statistic", 
-                         c("D", "Gst", "Nm"), selected = "D"),
+      radioButtons("stat", "Migration Statistic",
+                   c("D", "Gst", "Nm"), selected = "D"),
       
       sliderInput("filter_threshold", "Filter Threshold", min = 0, max = 1, 
                   value = 0, step = 0.05),
@@ -25,7 +25,7 @@ shinyUI(
       
       helpText(""),
       
-      helpText("Written and designed by Kevin Keenan using shiny",
+      helpText("Written and designed by Kevin Keenan, using shiny",
                "from RStudio and Inc. (2012).")
     ),
     
@@ -44,15 +44,13 @@ shinyUI(
                  " to a value > 0</li>",
                  "<li>The number of links in the network plot can be ",
                  "manipulated using the 'filter threshold' slider</li>",
-                 "<li>Download your network plot (as a .eps) and your ",
-                 "result matrix (as .txt) for reporting puposes.</li>",
-                 "<br>"),
-            HTML("<font size = 1>Any issues or queries regarding this application can be directed to kkeenan02[at]qub.ac.uk.<br> The methods used in this application were originally presented in the publications below. Please cite them.<br><b>Sundqvist et al, 2014<br>Keenan et al, 2015</b></font>")
+                 "<li>Download your result matrix (as .txt) for reporting ",
+                 "puposes.</li><br>"),
+            HTML("<font size = 1>Any issues or queries regarding this application can be directed to kkeenan02[at]qub.ac.uk.<br> The methods used in this application were originally presented in the publications below. Please cite them.<br><b>Sundqvist et al, 2015 (in prep.)<br>Keenan et al, 2015 (in prep.)</b></font>")
           ),
           
           tabPanel(
             HTML("<h5><font color = #215F9C>Network Plots</font></h5>"),
-            downloadButton("dlPlt", "Download Network .eps"),
             plotOutput("plt")           
           ),
           tabPanel(
