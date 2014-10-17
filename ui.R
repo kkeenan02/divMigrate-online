@@ -33,7 +33,7 @@ shinyUI(
         tabsetPanel(
           tabPanel(
             HTML("<h5><font color = #215F9C>Usage Instructions</font></h5>"),
-            HTML("<h3><font color = #215F9C>Welcome to the divMigrate-Online       web app!</font></h3><br><br>"),
+            HTML("<h3><font color = #215F9C>Welcome to the divMigrate-Online       web app!</font></h3><br>"),
             h4("Getting started:"),
             HTML("<ol>",
                  "<li>Read your genepop file (2-digit or 3-digit)</li>",
@@ -47,8 +47,9 @@ shinyUI(
                  "<li>Download your network plot (as a .eps) and your ",
                  "result matrix (as .txt) for reporting puposes.</li>",
                  "<br>"),
-            HTML("<font size = 1>Any issues or queries regarding this application can be directed to kkeenan02[at]qub.ac.uk.</font>")
+            HTML("<font size = 1>Any issues or queries regarding this application can be directed to kkeenan02[at]qub.ac.uk.<br> The methods used in this application were originally presented in the publications below. Please cite them.<br><b>Sundqvist et al, 2014<br>Keenan et al, 2015</b></font>")
           ),
+          
           tabPanel(
             HTML("<h5><font color = #215F9C>Network Plots</font></h5>"),
             downloadButton("dlPlt", "Download Network .eps"),
