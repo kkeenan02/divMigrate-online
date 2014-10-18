@@ -51,7 +51,7 @@ shinyUI(
           
           tabPanel(
             HTML("<h5><font color = #215F9C>Network Plots</font></h5>"),
-            plotOutput("plt")           
+            plotOutput("plt", height = "650px")           
           ),
           tabPanel(
             HTML("<h5><font color = #215F9C>Results Matrix</font></h5>"),
