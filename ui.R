@@ -5,7 +5,7 @@ shinyUI(
   
   pageWithSidebar(
     
-    headerPanel("divMigrate-online"),
+    headerPanel("divMigrate-online: Visualise and test gene flow patterns among populations"),
     
     sidebarPanel(
       
