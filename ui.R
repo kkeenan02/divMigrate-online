@@ -22,6 +22,10 @@ shinyUI(
       ),
       conditionalPanel(
         condition = "input.tabs=='Network Plots'",
+        uiOutput("stdplt")
+      ),
+      conditionalPanel(
+        condition = "input.tabs=='Network Plots'",
         uiOutput("pltFormat")
       ),
       HTML("<br>"),

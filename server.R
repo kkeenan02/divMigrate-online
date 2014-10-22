@@ -20,7 +20,7 @@ shinyServer(function(input, output, session){
                                      nbs = input$nbs,
                                      stat = "all",
                                      para = FALSE)
-      }) 
+      })
     }
   })
   
@@ -55,18 +55,27 @@ shinyServer(function(input, output, session){
                        inline = TRUE)
   })
   
-  # plot download format dialogue
-  output$pltFormat <- renderUI({
-    if(input$goButton==0L) return(NULL)
-    radioButtons("format", h5("6. Network download format."),
-                 c("pdf", "png", "eps"), inline = TRUE, 
-                 selected = "pdf")
-  })
-
-  # plot download button
+    # plot download button
   output$pltDL <- renderUI({
     if(input$goButton==0L) return(NULL)
     downloadButton("dlPlt", "Download Network")
+  })
+  
+  # re-standardise plots following sample exclusion
+  output$stdplt <- renderUI({
+    if(input$goButton==0L) return(NULL)
+      radioButtons("restand", h5("6. Re-standardize network connections?"),
+                   choices = c("Y", "N"),
+                   selected = "N",
+                   inline = TRUE) 
+  })
+  
+  # plot download format dialogue
+  output$pltFormat <- renderUI({
+    if(input$goButton==0L) return(NULL)
+    radioButtons("format", h5("7. Network download format."),
+                 c("pdf", "png", "eps"), inline = TRUE, 
+                 selected = "pdf")
   })
   
   # network plots
@@ -99,6 +108,10 @@ shinyServer(function(input, output, session){
                 which(colnames(dat) == x)
               })
               dat <- dat[-idx, -idx]
+              # re-standardize dat
+              if(input$restand == "Y"){
+                dat <- dat/max(dat, na.rm = TRUE) 
+              }
             }
           } else if(input$nbs == 0L){
             if(input$stat == "D"){
@@ -114,6 +127,10 @@ shinyServer(function(input, output, session){
                 which(colnames(dat) == x)
               })
               dat <- dat[-idx, -idx]
+              # re-standardize dat
+              if(input$restand == "Y"){
+                dat <- dat/max(dat, na.rm = TRUE) 
+              }
             }
           }
           dat[is.na(dat)] <- 0
