@@ -33,8 +33,7 @@ shinyUI(
         condition = "input.tabs=='Network Plots'",
         uiOutput("pltDL")
       ),
-      HTML("<br>"),
-      actionButton("goButton", h5("Calculate")),      
+      HTML("<br>"),      
       helpText(""),      
       helpText("Written and designed by Kevin Keenan, using shiny",
                "from RStudio and Inc. (2012).")
@@ -62,7 +61,7 @@ shinyUI(
         
         tabPanel(
           HTML("<h5><font color = #215F9C>Network Plots</font></h5>"),
-          plotOutput("plt", height = "650px")
+          plotOutput("plt", "auto", "650px")
         ),
         
         tabPanel(

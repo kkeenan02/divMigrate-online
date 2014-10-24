@@ -11,24 +11,33 @@ shinyServer(function(input, output, session){
   
   # calculate migration (only re calculate id number of bootstraps is changed)
   out <- reactive({
-    if(input$goButton==0L){
-      return(NULL) 
-    } else {
-      isolate({
-        infile <- input$file$datapath
-        diveRsity:::divMigrateOnline(infile = infile,
-                                     nbs = input$nbs,
-                                     stat = "all",
-                                     para = FALSE)
-      })
+    if(is.null(input$file)){
+      return(NULL)
     }
+    withProgress(session, min=1, max=15, {
+      setProgress(message = 'Calculation in progress',
+                  detail = 'This may take a while...')
+      for (i in 1:15) {
+        setProgress(value = i)
+        Sys.sleep(0.1)
+      }
+      #isolate({
+      infile <- input$file$datapath
+      diveRsity:::divMigrateOnline(infile = infile,
+                                   nbs = input$nbs,
+                                   stat = "all",
+                                   para = FALSE)
+      #})
+    })
   })
   
   # population exclusion dialogue
   output$popnames <- renderUI({
-    if(input$goButton==0L) return(NULL)
+    if(is.null(input$file)){
+      return(NULL)
+    }
     op <- out()
-    if(input$nbs != 0L & op$nbs != 0L){
+    if(input$nbs != 0L){
       if(input$stat == "D"){
         dat <- list(op$D, op$D_sig)
       } else if(input$stat == "Gst"){
@@ -57,13 +66,17 @@ shinyServer(function(input, output, session){
   
     # plot download button
   output$pltDL <- renderUI({
-    if(input$goButton==0L) return(NULL)
+    if(is.null(input$file)){
+      return(NULL)
+    }
     downloadButton("dlPlt", "Download Network")
   })
   
   # re-standardise plots following sample exclusion
   output$stdplt <- renderUI({
-    if(input$goButton==0L) return(NULL)
+    if(is.null(input$file)){
+      return(NULL)
+    }
       radioButtons("restand", h5("6. Re-standardize network connections?"),
                    choices = c("Y", "N"),
                    selected = "N",
@@ -72,7 +85,9 @@ shinyServer(function(input, output, session){
   
   # plot download format dialogue
   output$pltFormat <- renderUI({
-    if(input$goButton==0L) return(NULL)
+    if(is.null(input$file)){
+      return(NULL)
+    }
     radioButtons("format", h5("7. Network download format."),
                  c("pdf", "png", "eps"), inline = TRUE, 
                  selected = "pdf")
@@ -80,85 +95,80 @@ shinyServer(function(input, output, session){
   
   # network plots
   output$plt <- renderPlot({
-    if(input$goButton==0){
-      return(NULL) 
-    } else {
-      op <- out()
-      if(input$nbs == op$nbs){
-        withProgress(session, min=1, max=15, {
-          setProgress(message = 'Calculation in progress',
-                      detail = 'This may take a while...')
-          for (i in 1:15) {
-            setProgress(value = i)
-            Sys.sleep(0.1)
-          }
-          if(input$nbs != 0L){
-            if(input$stat == "D"){
-              dat <- list(op[[1]], op[[2]])
-            } else if(input$stat == "Gst"){
-              dat <- list(op[[3]], op[[4]])
-            } else if(input$stat == "Nm"){
-              dat <- list(op[[5]], op[[6]])
-            }
-            diag(dat[[2]]) <- FALSE
-            dat[[1]][!dat[[2]]] <- 0
-            dat <- dat[[1]]
-            if(!is.null(input$pops)){
-              idx <- sapply(input$pops, function(x){
-                which(colnames(dat) == x)
-              })
-              dat <- dat[-idx, -idx]
-              # re-standardize dat
-              if(input$restand == "Y"){
-                dat <- dat/max(dat, na.rm = TRUE) 
-              }
-            }
-          } else if(input$nbs == 0L){
-            if(input$stat == "D"){
-              dat <- list(op[[1]])
-            } else if(input$stat == "Gst"){
-              dat <- list(op[[2]])
-            } else if(input$stat == "Nm"){
-              dat <- list(op[[3]])
-            } 
-            dat <- dat[[1]]
-            if(!is.null(input$pops)){
-              idx <- sapply(input$pops, function(x){
-                which(colnames(dat) == x)
-              })
-              dat <- dat[-idx, -idx]
-              # re-standardize dat
-              if(input$restand == "Y"){
-                dat <- dat/max(dat, na.rm = TRUE) 
-              }
-            }
-          }
-          dat[is.na(dat)] <- 0
-          if(input$filter_threshold != 0L){
-            dat[dat <= input$filter_threshold] <- 0
-          }
-          isolate({
-            qgraph::qgraph(dat, nodeNames = colnames(dat), posCol = "darkblue",
-                           legend = TRUE, edge.labels = TRUE, 
-                           mar = c(2,2,5,5), curve = 2.5)
-            if(input$nbs != 0L){
-              title(paste("Relative migration network (Filter threshold = ", 
-                          input$filter_threshold, "; ", input$nbs, 
-                          " bootstraps; ", input$stat, " method)", sep = ""))
-            } else {
-              title(paste("Relative migration network (Filter threshold = ", 
-                          input$filter_threshold, "; ", input$stat, ")", 
-                          sep = "")) 
-            }
-          })
+    if(is.null(input$file)){
+      return(NULL)
+    }
+    op <- out()
+    #if(input$nbs == op$nbs){
+    if(input$nbs != 0L){
+      if(input$stat == "D"){
+        dat <- list(op[[1]], op[[2]])
+      } else if(input$stat == "Gst"){
+        dat <- list(op[[3]], op[[4]])
+      } else if(input$stat == "Nm"){
+        dat <- list(op[[5]], op[[6]])
+      }
+      diag(dat[[2]]) <- FALSE
+      dat[[1]][!dat[[2]]] <- 0
+      dat <- dat[[1]]
+      if(!is.null(input$pops)){
+        idx <- sapply(input$pops, function(x){
+          which(colnames(dat) == x)
         })
+        dat <- dat[-idx, -idx]
+        # re-standardize dat
+        if(input$restand == "Y"){
+          dat <- dat/max(dat, na.rm = TRUE) 
+        }
+      }
+    } else {
+      if(input$stat == "D"){
+        dat <- list(op[[1]])
+      } else if(input$stat == "Gst"){
+        dat <- list(op[[2]])
+      } else if(input$stat == "Nm"){
+        dat <- list(op[[3]])
+      } 
+      dat <- dat[[1]]
+      if(!is.null(input$pops)){
+        idx <- sapply(input$pops, function(x){
+          which(colnames(dat) == x)
+        })
+        dat <- dat[-idx, -idx]
+        # re-standardize dat
+        if(input$restand == "Y"){
+          dat <- dat/max(dat, na.rm = TRUE) 
+        }
       }
     }
+    dat[is.na(dat)] <- 0
+    if(input$filter_threshold != 0L){
+      dat[dat <= input$filter_threshold] <- 0
+    }
+    #isolate({
+    qgraph::qgraph(dat, nodeNames = colnames(dat), posCol = "darkblue",
+                   legend = TRUE, edge.labels = TRUE, 
+                   mar = c(2,2,5,5), curve = 2.5)
+    if(input$nbs != 0L){
+      title(paste("Relative migration network (Filter threshold = ", 
+                  input$filter_threshold, "; ", input$nbs, 
+                  " bootstraps; ", input$stat, " method)", sep = ""))
+    } else {
+      title(paste("Relative migration network (Filter threshold = ", 
+                  input$filter_threshold, "; ", input$stat, ")", 
+                  sep = "")) 
+    }
+    #})
+    
+    #}
   })
   
   # Matrix table
   output$mat <- downloadHandler(
     filenames <- function(file){
+      if(is.null(input$file)){
+        return(NULL)
+      }
       if(input$stat == "D"){
         paste("divMigrate-online_", gsub(" ", "_", date()), "-[D].txt", 
               sep = "") 
@@ -171,8 +181,11 @@ shinyServer(function(input, output, session){
       }
     },
     content <- function(file){
+      if(is.null(input$file)){
+        return(NULL)
+      }
       op <- out()
-      if(input$nbs != 0L & op$nbs != 0L){
+      if(input$nbs != 0L){
         if(input$stat == "D"){
           dat <- list(op[[1]], op[[2]])
         } else if(input$stat == "Gst"){
@@ -246,6 +259,9 @@ shinyServer(function(input, output, session){
   output$dlPlt <- downloadHandler(
     #if(input$goButton==0) return(NULL)
     filename = function() {
+      if(is.null(input$file)){
+        return(NULL)
+      }
       if(input$stat == "D"){
         paste("divMigrate-online_", gsub(" ", "_", date()), "-[D-Network].",
               input$format, sep = "") 
@@ -258,10 +274,13 @@ shinyServer(function(input, output, session){
       }
     },
     content = function(file) {
+      if(is.null(input$file)){
+        return(NULL)
+      }
       op <- out()
       tmp <- tempfile()
       on.exit(unlink(tmp))
-      if(input$nbs != 0L & op$nbs != 0L){
+      if(input$nbs != 0L){
         if(input$stat == "D"){
           dat <- list(op[[1]], op[[2]])
         } else if(input$stat == "Gst"){
