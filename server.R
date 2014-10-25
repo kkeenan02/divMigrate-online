@@ -27,7 +27,6 @@ shinyServer(function(input, output, session){
                                    nbs = input$nbs,
                                    stat = "all",
                                    para = FALSE)
-      #})
     })
   })
   
@@ -145,6 +144,7 @@ shinyServer(function(input, output, session){
     if(input$filter_threshold != 0L){
       dat[dat <= input$filter_threshold] <- 0
     }
+    #if(input$goButton == 0L) return(NULL)
     #isolate({
     qgraph::qgraph(dat, nodeNames = colnames(dat), posCol = "darkblue",
                    legend = TRUE, edge.labels = TRUE, 

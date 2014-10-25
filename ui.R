@@ -33,7 +33,8 @@ shinyUI(
         condition = "input.tabs=='Network Plots'",
         uiOutput("pltDL")
       ),
-      HTML("<br>"),      
+      HTML("<br>"),
+      #actionButton("goButton", h5("Calculate")),
       helpText(""),      
       helpText("Written and designed by Kevin Keenan, using shiny",
                "from RStudio and Inc. (2012).")
