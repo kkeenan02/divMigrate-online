@@ -5,5 +5,6 @@ shinyapps::deployApp(appName = "divMigrate-online", appDir = "./divMigrate-onlin
                      launch.browser = getOption("shinyapps.launch.browser", 
                                                 interactive()), quiet = FALSE)
 
-configureApp("divMigrate-online", account = "popgen", appDir = "./divMigrate-online", 
-             redeploy = TRUE, size = "xlarge", quiet = FALSE)
+shinyapps::configureApp("divMigrate-online", account = "popgen", 
+                        appDir = "./divMigrate-online", 
+                        redeploy = TRUE, size = "xlarge", quiet = FALSE)
