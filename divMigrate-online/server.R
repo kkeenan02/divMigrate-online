@@ -148,7 +148,7 @@ shinyServer(function(input, output, session){
     #isolate({
     qgraph::qgraph(dat, nodeNames = colnames(dat), posCol = "darkblue",
                    legend = TRUE, edge.labels = TRUE, 
-                   mar = c(2,2,5,5), curve = 2.5)
+                   mar = c(2,2,5,5), curve = 2.5, width = 1200, height = 800)
     if(input$nbs != 0L){
       title(paste("Relative migration network (Filter threshold = ", 
                   input$filter_threshold, "; ", input$nbs, 
