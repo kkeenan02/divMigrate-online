@@ -26,7 +26,8 @@ shinyServer(function(input, output, session){
       diveRsity:::divMigrateOnline(infile = infile,
                                    nbs = input$nbs,
                                    stat = "all",
-                                   para = FALSE)
+                                   para = FALSE,
+                                   alpha = input$alpha)
     })
   })
   
@@ -53,7 +54,7 @@ shinyServer(function(input, output, session){
         dat <- list(op$Nm)
       } 
     }
-    pops <- colnames(dat[[1]])
+    pops <<- colnames(dat[[1]])
     #pops <- as.character(sapply(pops, function(x) gsub(",", "", x)))
     checkboxGroupInput("pops", HTML("<br><h5>",
                                     "5. Exclude populations from network?",
@@ -327,7 +328,7 @@ shinyServer(function(input, output, session){
       }
       qgraph::qgraph(dat, nodeNames = colnames(dat), posCol = "darkblue",
                      legend = TRUE, edge.labels = TRUE, 
-                     curve = 2.5, width=5, height=5, mar = c(5,2,4,5))
+                     curve = 2.5, mar = c(5,2,4,5))
       if(input$nbs != 0L){
         title(paste("Relative migration network (Filter threshold = ", 
                     input$filter_threshold, "; ", input$nbs, 

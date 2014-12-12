@@ -9,3 +9,4 @@ test.html
 deployment.R
 shinyapps/
 *.txt
+circos_plots/

@@ -11,10 +11,12 @@ shinyUI(
     sidebarPanel(      
       fileInput("file", h5("1. Input file"), multiple = FALSE, accept = NULL),      
       numericInput("nbs", h5("2. Number of bootstraps"), value = 0, min = 0, 
-                   max = 5000, step = 1),      
-      radioButtons("stat", h5("3. Migration Statistic"),
+                   max = 5000, step = 1),
+      numericInput("alpha", h5("3. alpha"), value = 0.05, min = 0, max = 1, 
+                   step = 0.000000001),
+      radioButtons("stat", h5("4. Migration Statistic"),
                    c("D", "Gst", "Nm"), selected = "D"),      
-      sliderInput("filter_threshold", h5("4. Filter Threshold"), min = 0, 
+      sliderInput("filter_threshold", h5("5. Filter Threshold"), min = 0, 
                   max = 1, value = 0, step = 0.05),
       conditionalPanel(
         condition = "input.tabs=='Network Plots'",
